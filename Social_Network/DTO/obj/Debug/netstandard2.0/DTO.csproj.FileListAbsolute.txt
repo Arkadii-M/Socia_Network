@@ -1,0 +1,5 @@
+C:\Users\Programmer\source\repos\Social_Network\DTO\bin\Debug\netstandard2.0\DTO.deps.json
+C:\Users\Programmer\source\repos\Social_Network\DTO\bin\Debug\netstandard2.0\DTO.dll
+C:\Users\Programmer\source\repos\Social_Network\DTO\obj\Debug\netstandard2.0\DTO.csprojAssemblyReference.cache
+C:\Users\Programmer\source\repos\Social_Network\DTO\obj\Debug\netstandard2.0\DTO.AssemblyInfoInputs.cache
+C:\Users\Programmer\source\repos\Social_Network\DTO\obj\Debug\netstandard2.0\DTO.AssemblyInfo.cs
