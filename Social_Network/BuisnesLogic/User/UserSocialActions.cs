@@ -4,22 +4,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 
 namespace BuisnesLogic.User
 {
     public partial class User
     {
+        public List<PostsDTO> GetAllPosts()
+        {
+            DAL.Concrete.PostsDal dal = new DAL.Concrete.PostsDal(conn);
+            return dal.GetAllPosts();
+        }
+        public PostsDTO GetPost(int id)
+        {
+            DAL.Concrete.PostsDal dal = new DAL.Concrete.PostsDal(conn);
+            return dal.GetPostById(id);
+
+        }
         public void Create_Post(string Title,string Body,string Tags)
         {
             DTO.PostsDTO post = new DTO.PostsDTO() { 
                 Title = Title,
                 Body = Body,
-                Tags = Tags.Split().ToList(),
-                Create = DateTime.Now,
-                Modify = DateTime.Now,
-                Comment_List = new List<CommentsDTO>(),
-                Likes =0,
-                Dislikes =0
+                Tags = Tags.Split(',').ToList(),
+                Create = new BsonTimestamp(DateTime.UtcNow.ToBinary()),
+                Modify = new BsonTimestamp(DateTime.UtcNow.ToBinary()),
+                Comments = new List<CommentsDTO>(),
+                Likes = new List<LikesDTO>(),
+                Dislikes =new List<DislikeDTO>()
                     };
             DAL.Concrete.PostsDal dal = new DAL.Concrete.PostsDal(conn);
             try
@@ -39,7 +51,7 @@ namespace BuisnesLogic.User
                 Title = Title,
                 Body = Body,
                 Tags = (Tags == null)? null: Tags.Split().ToList(),
-                Modify = DateTime.UtcNow,
+                Modify = new BsonTimestamp(DateTime.UtcNow.ToBinary()),
             };
             DAL.Concrete.PostsDal dal = new DAL.Concrete.PostsDal(conn);
             dal.UpdatePost(post);
@@ -76,14 +88,84 @@ namespace BuisnesLogic.User
         public void LikePost(int id) 
         {
             DAL.Concrete.PostsDal dal = new DAL.Concrete.PostsDal(conn);
-            DTO.LikesDTO like = new DTO.LikesDTO() { User_Id = this.Account.User_Id };
-            dal.Like(id,like);
+            bool has_like = false ;
+            bool has_dislike = false;
+            PostsDTO post;
+            try
+            {
+                post =dal.GetPostById(id);
+
+            }
+            catch(Exception)
+            {
+                return;
+            }
+            foreach(var l in post.Likes)
+            {
+                if(l.User_Id == this.Account.User_Id)
+                {
+                    has_like = true;
+                    break;
+                }
+            }
+            foreach (var l in post.Dislikes)
+            {
+                if (l.User_Id == this.Account.User_Id)
+                {
+                    has_dislike = true;
+                    break;
+                }
+            }
+            if(has_dislike)
+            {
+                dal.UnDislike(id, new DislikeDTO() { User_Id = this.Account.User_Id });
+            }
+            if(!has_like)
+            {
+                DTO.LikesDTO like = new DTO.LikesDTO() { User_Id = this.Account.User_Id };
+                dal.Like(id, like);
+            }
         }
         public void DislikePost(int id)
         {
             DAL.Concrete.PostsDal dal = new DAL.Concrete.PostsDal(conn);
-            DTO.DislikeDTO dislike = new DTO.DislikeDTO() { User_Id = this.Account.User_Id };
-            dal.Dislike(id,dislike);
+            bool has_like = false;
+            bool has_dislike = false;
+            PostsDTO post;
+            try
+            {
+                post = dal.GetPostById(id);
+
+            }
+            catch (Exception)
+            {
+                return;
+            }
+            foreach (var l in post.Likes)
+            {
+                if (l.User_Id == this.Account.User_Id)
+                {
+                    has_like = true;
+                    break;
+                }
+            }
+            foreach (var l in post.Dislikes)
+            {
+                if (l.User_Id == this.Account.User_Id)
+                {
+                    has_dislike = true;
+                    break;
+                }
+            }
+            if (has_like)
+            {
+                dal.UnLike(id, new LikesDTO() { User_Id = this.Account.User_Id });
+            }
+            if (!has_dislike)
+            {
+                DTO.DislikeDTO dislike = new DTO.DislikeDTO() { User_Id = this.Account.User_Id };
+                dal.Dislike(id, dislike);
+            }
         }
         public void AddToFriend(int id)
         {
@@ -116,18 +198,20 @@ namespace BuisnesLogic.User
             {
                 Author_Id = this.Account.User_Id,
                 Comment_Text = text,
-                Likes = null,
-                Dislikes = null,
-                Create = DateTime.UtcNow.ToString(),
-                Modify = DateTime.UtcNow.ToString()
+                Likes = new List<LikesDTO>(),
+                Dislikes = new List<DislikeDTO>(),
+                Create = new BsonTimestamp(DateTime.UtcNow.ToBinary()),
+                Modify = new BsonTimestamp(DateTime.UtcNow.ToBinary())
 
             };
             DAL.Concrete.PostsDal dal = new DAL.Concrete.PostsDal(conn);
-            //todo
+            dal.AddCommentToPost(post_id, comment);
         }
         public void DeleteComment(int post_id,int comment_id)
         {
-            //todo
+            DAL.Concrete.PostsDal dal = new DAL.Concrete.PostsDal(conn);
+            dal.DeleteComment(post_id,comment_id);
         }
+        
     }
 }

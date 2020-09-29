@@ -9,9 +9,6 @@ namespace DTO
 {
     public class DislikeDTO
     {
-        [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-        public string Id { get; set; }
         [BsonElement("User_Id")]
         public int User_Id { get; set; }
     }

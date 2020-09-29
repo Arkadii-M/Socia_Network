@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,9 +8,6 @@ namespace DTO
 {
     public class CommentsDTO
     {
-        [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-        public string Id { get; set; }
         [BsonElement("Comment_Id")]
         public int Comment_Id { get; set; }
         [BsonElement("Author_Id")]
@@ -22,12 +20,10 @@ namespace DTO
         public List<DislikeDTO> Dislikes { get; set; } 
 
         [BsonElement("Create_Date")]
-        [BsonRepresentation(MongoDB.Bson.BsonType.DateTime)]
-        public string Create { get; set; }
+        public BsonTimestamp Create { get; set; }
 
         [BsonElement("Modify_Date")]
-        [BsonRepresentation(MongoDB.Bson.BsonType.DateTime)]
-        public string Modify { get; set; }
+        public BsonTimestamp Modify { get; set; }
 
     }
 }

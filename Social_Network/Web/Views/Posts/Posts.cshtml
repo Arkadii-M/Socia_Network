@@ -1,0 +1,64 @@
+﻿@{
+    Layout = "~/Views/Posts/Posts_Layout.cshtml";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link type="text/css" rel="stylesheet" href="../../Content/Site.css" />
+    <title>Пости</title>
+</head>
+<body>
+    <div>
+            @foreach (var post in ViewBag.Posts)
+            {
+            <div class="container">
+                <div class="post">
+                    <div class="post-header">
+                        <h1>@post.Title</h1>
+                        <div class="post-meta">
+                            <span class="author">@post.Author_Id</span>
+                            <span class="category">@string.Join(",", post.Tags)</span>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <p>
+                            @post.Body
+                        </p>
+                    </div>
+                </div>
+
+                <div class="Reaction">
+                    <p>Likes: @post.Likes.Count</p>
+                    <p>Dislikes: @post.Dislikes.Count</p>
+                    @using (Html.BeginForm("Posts", "Posts", FormMethod.Post))
+                    {
+                        <input type="submit" value="Like" name="@post.Post_Id" id="123"/>
+                        <input type="submit" value="Dislike" name="@post.Post_Id" id="12345" />
+
+                    }
+                </div>
+                <div class="Comments">
+                    @foreach (var comm in post.Comments)
+                    {
+                        <div class="comment-meta">
+                            <span class="author">@comm.Author_Id</span>
+                        </div>
+                        <div class="comment">
+                            <p>
+                                @comm.Comment_Text
+                            </p>
+                        </div>
+
+                    }
+                    @using (Html.BeginForm("Posts", "Posts", FormMethod.Post))
+                    {
+                        <p> <input type="submit" value="Comment" name="@post.Post_Id" id="12355" /> </p>
+                    }
+                </div>
+            </div>
+            }
+    </div>
+</body>
+</html>

@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 
@@ -28,9 +29,7 @@ namespace DTO
         public List<int> Friends_Ids { get; set; }
 
         [BsonElement("Reg_Date")]
-
-        //[BsonRepresentation(MongoDB.Bson.BsonType.DateTime)]
-       public string Reg_Date { get; set; }
+       public BsonTimestamp Reg_Date { get; set; }
 
     }
 }

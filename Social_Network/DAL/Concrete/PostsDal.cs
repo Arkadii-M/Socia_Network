@@ -20,99 +20,198 @@ namespace DAL.Concrete
 
         public void AddCommentToPost(int id, CommentsDTO comment)
         {
-            var client = new MongoClient(connectionString);
-            var db = client.GetDatabase("Social_Network");
-            var posts = db.GetCollection<PostsDTO>("Posts");
-            var UpdateFilter = Builders<PostsDTO>.Update.AddToSet("Comments", comment);
-            posts.UpdateOne(g => g.Post_Id == id, UpdateFilter);
+            try
+            {
+                var client = new MongoClient(connectionString);
+                var db = client.GetDatabase("Social_Network");
+                var posts = db.GetCollection<PostsDTO>("Posts");
+                var UpdateFilter = Builders<PostsDTO>.Update.AddToSet("Comments", comment);
+                posts.UpdateOne(g => g.Post_Id == id, UpdateFilter);
+            }
+            catch(Exception exp)
+            {
+                throw exp;
+            }
+
+            
+        }
+        public void DeleteComment(int post_id, int comment_id) // not checked
+        {
+            try
+            {
+                var post = this.GetPostById(post_id);
+                var comment = post.Comments[comment_id - 1];
+                var client = new MongoClient(connectionString);
+                var db = client.GetDatabase("Social_Network");
+                var posts = db.GetCollection<PostsDTO>("Posts");
+                
+                var UpdateFilter = Builders<PostsDTO>.Update.Pull("Comments", comment);
+                posts.UpdateOne(g => g.Post_Id == post_id, UpdateFilter);
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
+            throw new NotImplementedException();
         }
 
         public PostsDTO CreatePost(PostsDTO post)
         {
-            var client = new MongoClient(connectionString);
-            var db = client.GetDatabase("Social_Network");
-            var posts = db.GetCollection<PostsDTO>("Posts");
-            var count_id = posts.CountDocuments(p => p.Post_Id >= 0);
-            posts.InsertOne(post);
-            if (posts.CountDocuments(p => p.Post_Id >= 0) > count_id)
+            try
             {
-                post.Post_Id = (int)count_id;
+                var client = new MongoClient(connectionString);
+                var db = client.GetDatabase("Social_Network");
+                var posts = db.GetCollection<PostsDTO>("Posts");
+                var count_id = posts.CountDocuments(p => p.Post_Id > 0);
+                post.Post_Id = (int)count_id + 1;
+                posts.InsertOne(post);
+                return post;
             }
-            else
+            catch (Exception exp)
             {
-                post.Post_Id = -1;
+                throw exp;
             }
-            return post;
         }
 
         public void DeletePost(int id)
         {
-            var client = new MongoClient(connectionString);
-            var db = client.GetDatabase("Social_Network");
-            var posts = db.GetCollection<PostsDTO>("Posts");
-            posts.DeleteOne(p => p.Post_Id == id);
+            try
+            {
+                var client = new MongoClient(connectionString);
+                var db = client.GetDatabase("Social_Network");
+                var posts = db.GetCollection<PostsDTO>("Posts");
+                posts.DeleteOne(p => p.Post_Id == id);
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
         }
 
-        public void Dislike(int id, DislikeDTO like)  // UPDATE
+        public void Dislike(int id, DislikeDTO dislike)  //
         {
-            var client = new MongoClient(connectionString);
-            var db = client.GetDatabase("Social_Network");
-            var posts = db.GetCollection<PostsDTO>("Posts");
-            var UpdateFilter = Builders<PostsDTO>.Update.Inc("Likes", -1);
-            posts.UpdateOne(g => g.Post_Id == id, UpdateFilter);
+            try
+            {
+                var client = new MongoClient(connectionString);
+                var db = client.GetDatabase("Social_Network");
+                var posts = db.GetCollection<PostsDTO>("Posts");
+                var UpdateFilter = Builders<PostsDTO>.Update.AddToSet("Dislikes",dislike);
+                posts.UpdateOne(g => g.Post_Id == id, UpdateFilter);
+             }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
+        }
+        public void UnDislike(int post_id, DislikeDTO dislike)
+        {
+            try
+            {
+                var client = new MongoClient(connectionString);
+                var db = client.GetDatabase("Social_Network");
+                var posts = db.GetCollection<PostsDTO>("Posts");
+                var UpdateFilter = Builders<PostsDTO>.Update.Pull("Dislikes", dislike);
+                posts.UpdateOne(g => g.Post_Id == post_id, UpdateFilter);
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
+        }
+        public void Like(int id, LikesDTO like) // 
+        {
+            try
+            {
+                var client = new MongoClient(connectionString);
+                var db = client.GetDatabase("Social_Network");
+                var posts = db.GetCollection<PostsDTO>("Posts");
+                var UpdateFilter = Builders<PostsDTO>.Update.AddToSet("Likes", like);
+                posts.UpdateOne(g => g.Post_Id == id, UpdateFilter);
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
+        }
+        public void UnLike(int post_id, LikesDTO like)
+        {
+            try
+            {
+                var client = new MongoClient(connectionString);
+                var db = client.GetDatabase("Social_Network");
+                var posts = db.GetCollection<PostsDTO>("Posts");
+                var UpdateFilter = Builders<PostsDTO>.Update.Pull("Likes", like);
+                posts.UpdateOne(g => g.Post_Id == post_id, UpdateFilter);
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
         }
 
         public List<PostsDTO> GetAllPosts()
         {
-            var client = new MongoClient(connectionString);
-            var db = client.GetDatabase("Social_Network");
-            var posts = db.GetCollection<PostsDTO>("Posts");
+            try
+            {
+                var client = new MongoClient(connectionString);
+                var db = client.GetDatabase("Social_Network");
+                var posts = db.GetCollection<PostsDTO>("Posts");
 
-            var all_posts = posts.Find(new BsonDocument()).ToList();
-            return all_posts;
+                var all_posts = posts.Find(p => p.Post_Id > 0).ToList();
+                return all_posts;
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
         }
 
         public PostsDTO GetPostById(int id)
         {
-            var client = new MongoClient(connectionString);
-            var db = client.GetDatabase("Social_Network");
-            var posts = db.GetCollection<PostsDTO>("Posts");
-            var founded = posts.Find(p => p.Post_Id == id).Single();
-            return founded;
+            try
+            {
+                var client = new MongoClient(connectionString);
+                var db = client.GetDatabase("Social_Network");
+                var posts = db.GetCollection<PostsDTO>("Posts");
+                var founded = posts.Find(p => p.Post_Id == id).Single();
+                return founded;
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
         }
 
-        public void Like(int id, LikesDTO like) // UPDATE
-        {
-            var client = new MongoClient(connectionString);
-            var db = client.GetDatabase("Social_Network");
-            var posts = db.GetCollection<PostsDTO>("Posts");
-            var UpdateFilter = Builders<PostsDTO>.Update.Inc("Likes",1);
-            posts.UpdateOne(g => g.Post_Id == id, UpdateFilter);
-        }
-
+       
         public PostsDTO UpdatePost(PostsDTO post)
         {
-            var client = new MongoClient(connectionString);
-            var db = client.GetDatabase("Social_Network");
-            var posts = db.GetCollection<PostsDTO>("Posts");
+            try
+            {
+                var client = new MongoClient(connectionString);
+                var db = client.GetDatabase("Social_Network");
+                var posts = db.GetCollection<PostsDTO>("Posts");
             
-            var UpdateFilter = Builders<PostsDTO>.Update.Set("Post_Id", post.Post_Id); // ?
-            var UpdateDef = UpdateFilter;
+                var UpdateFilter = Builders<PostsDTO>.Update.Set("Post_Id", post.Post_Id); // ?
 
-            if (post.Post_Id != 0) { UpdateDef.Set("Post_Id", post.Post_Id); }
-            if (post.Author_Id != 0) { UpdateDef.Set("Author_Id", post.Author_Id); }
-            if (post.Title != null) { UpdateDef.Set("Title", post.Title); }
-            if (post.Body != null) { UpdateDef.Set("Body", post.Body); }
-            if (post.Tags != null) { UpdateDef.Set("Tags", post.Tags); }
+                if (post.Author_Id != 0) { UpdateFilter = UpdateFilter.Set("Author_Id", post.Author_Id); }
+                if (post.Title != null) { UpdateFilter = UpdateFilter.Set("Title", post.Title); }
+                if (post.Body != null) { UpdateFilter=UpdateFilter.Set("Body", post.Body); }
+                if (post.Tags != null) { UpdateFilter=UpdateFilter.Set("Tags", post.Tags); }
 
-            UpdateDef.Set("Modify", DateTime.Now);
+                UpdateFilter=UpdateFilter.Set("Modify", DateTime.Now);
 
 
-            posts.UpdateOne(g => g.Post_Id == post.Post_Id, UpdateDef);
-            var res = posts.Find(p => p.Post_Id == post.Post_Id).Single();
+                posts.UpdateOne(g => g.Post_Id == post.Post_Id, UpdateFilter);
+                var res = posts.Find(p => p.Post_Id == post.Post_Id).Single();
             return res;
-            
+            }
+            catch (Exception exp)
+            {
+                throw exp;
+            }
+
         }
 
+        
     }
 }
