@@ -189,6 +189,7 @@
     <Content Include="Views\Posts\AddComment.cshtml" />
     <Content Include="Views\Posts\Posts_Layout.cshtml" />
     <Content Include="Views\Posts\AddPost.cshtml" />
+    <Content Include="Views\Posts\Post.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -28,21 +28,21 @@ namespace Web.Controllers
         [HttpPost]
         public ActionResult Posts(FormCollection form)
         {
-            var keys = form.GetKey(0);
-            var val = form.GetValues(keys);
-            int id = Convert.ToInt32(keys);
+            var a = form.AllKeys;
+            var post_id = Convert.ToInt32(form.GetValues("Post_Id")[0]);
+            var action = form.GetKey(1);
 
-            if (val[0] == "Like")
+            if (action == "LikeButton")
             {
-                user.Get().LikePost(id);
+                user.Get().LikePost(post_id);
             }
-            else if (val[0] == "Dislike")
+            else if (action == "DislikeButton")
             {
-                user.Get().DislikePost(id);
+                user.Get().DislikePost(post_id);
             }
-            else if (val[0] == "Comment")
+            else if (action == "CommentButton")
             {
-                TempData["post_id"] = id;
+                TempData["post_id"] = post_id;
                 return Redirect("~/Posts/AddComment");
             }
             ViewBag.Posts = user.Get().GetAllPosts();
@@ -81,6 +81,11 @@ namespace Web.Controllers
         {
             user.Get().Create_Post(post.Title, post.Body, string.Join(",",post.Tags));
             return Redirect("~/Posts/Posts");
+        }
+
+        public ActionResult Post()
+        {
+            return PartialView();
         }
     }
 }
