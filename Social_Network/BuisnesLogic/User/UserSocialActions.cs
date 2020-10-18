@@ -24,6 +24,7 @@ namespace BuisnesLogic.User
         public void Create_Post(string Title,string Body,string Tags)
         {
             DTO.PostsDTO post = new DTO.PostsDTO() { 
+                Author_Id = this.user_id,
                 Title = Title,
                 Body = Body,
                 Tags = Tags.Split(',').ToList(),
@@ -70,7 +71,7 @@ namespace BuisnesLogic.User
             }
 
             
-            if(post.Author_Id == this.Account.User_Id)
+            if(post.Author_Id == this.user_id)
             {
                 try
                 {
@@ -102,7 +103,7 @@ namespace BuisnesLogic.User
             }
             foreach(var l in post.Likes)
             {
-                if(l.User_Id == this.Account.User_Id)
+                if(l.User_Id == this.user_id)
                 {
                     has_like = true;
                     break;
@@ -110,7 +111,7 @@ namespace BuisnesLogic.User
             }
             foreach (var l in post.Dislikes)
             {
-                if (l.User_Id == this.Account.User_Id)
+                if (l.User_Id == this.user_id)
                 {
                     has_dislike = true;
                     break;
@@ -118,11 +119,11 @@ namespace BuisnesLogic.User
             }
             if(has_dislike)
             {
-                dal.UnDislike(id, new DislikeDTO() { User_Id = this.Account.User_Id });
+                dal.UnDislike(id, new DislikeDTO() { User_Id = this.user_id });
             }
             if(!has_like)
             {
-                DTO.LikesDTO like = new DTO.LikesDTO() { User_Id = this.Account.User_Id };
+                DTO.LikesDTO like = new DTO.LikesDTO() { User_Id = this.user_id };
                 dal.Like(id, like);
             }
         }
@@ -143,7 +144,7 @@ namespace BuisnesLogic.User
             }
             foreach (var l in post.Likes)
             {
-                if (l.User_Id == this.Account.User_Id)
+                if (l.User_Id == this.user_id)
                 {
                     has_like = true;
                     break;
@@ -151,7 +152,7 @@ namespace BuisnesLogic.User
             }
             foreach (var l in post.Dislikes)
             {
-                if (l.User_Id == this.Account.User_Id)
+                if (l.User_Id == this.user_id)
                 {
                     has_dislike = true;
                     break;
@@ -159,11 +160,11 @@ namespace BuisnesLogic.User
             }
             if (has_like)
             {
-                dal.UnLike(id, new LikesDTO() { User_Id = this.Account.User_Id });
+                dal.UnLike(id, new LikesDTO() { User_Id = this.user_id });
             }
             if (!has_dislike)
             {
-                DTO.DislikeDTO dislike = new DTO.DislikeDTO() { User_Id = this.Account.User_Id };
+                DTO.DislikeDTO dislike = new DTO.DislikeDTO() { User_Id = this.user_id };
                 dal.Dislike(id, dislike);
             }
         }
@@ -171,11 +172,12 @@ namespace BuisnesLogic.User
         {
             if(this.Logined)
             {
-                if(!this.Account.Friends_Ids.Contains(id))
+                var acc = GetMe();
+                if(!acc.Friends_Ids.Contains(id))
                 {
-                    this.Account.Friends_Ids.Add(id);
+                    acc.Friends_Ids.Add(id);
                     DAL.Concrete.UsersDal dal = new DAL.Concrete.UsersDal(conn);
-                    dal.UpdateUser(this.Account);
+                    dal.UpdateUser(acc);
                 }
             }
         }
@@ -183,11 +185,12 @@ namespace BuisnesLogic.User
         {
             if (this.Logined)
             {
-                if (this.Account.Friends_Ids.Contains(id))
+                var acc = GetMe();
+                if (acc.Friends_Ids.Contains(id))
                 {
-                    this.Account.Friends_Ids.Remove(id);
+                    acc.Friends_Ids.Remove(id);
                     DAL.Concrete.UsersDal dal = new DAL.Concrete.UsersDal(conn);
-                    dal.UpdateUser(this.Account);
+                    dal.UpdateUser(acc);
                 }
             }
         }
@@ -196,7 +199,7 @@ namespace BuisnesLogic.User
         {
             CommentsDTO comment = new CommentsDTO()
             {
-                Author_Id = this.Account.User_Id,
+                Author_Id = this.user_id,
                 Comment_Text = text,
                 Likes = new List<LikesDTO>(),
                 Dislikes = new List<DislikeDTO>(),

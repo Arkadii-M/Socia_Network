@@ -1,0 +1,9 @@
+C:\Users\Programmer\source\repos\Social_Network\DTONeo4j\bin\Debug\DTONeo4j.dll
+C:\Users\Programmer\source\repos\Social_Network\DTONeo4j\bin\Debug\DTONeo4j.pdb
+C:\Users\Programmer\source\repos\Social_Network\DTONeo4j\obj\Debug\DTONeo4j.csprojAssemblyReference.cache
+C:\Users\Programmer\source\repos\Social_Network\DTONeo4j\obj\Debug\DTONeo4j.csproj.CoreCompileInputs.cache
+C:\Users\Programmer\source\repos\Social_Network\DTONeo4j\obj\Debug\DTONeo4j.dll
+C:\Users\Programmer\source\repos\Social_Network\DTONeo4j\obj\Debug\DTONeo4j.pdb
+C:\Users\Programmer\source\repos\Social_Network\DTONeo4j\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Programmer\source\repos\Social_Network\DTONeo4j\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Programmer\source\repos\Social_Network\DTONeo4j\obj\Debug\DTONeo4j.csproj.CopyComplete

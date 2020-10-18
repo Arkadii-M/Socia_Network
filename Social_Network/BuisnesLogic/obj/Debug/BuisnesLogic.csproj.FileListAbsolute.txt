@@ -25,3 +25,13 @@ C:\Users\Programmer\source\repos\Social_Network\BuisnesLogic\obj\Debug\BuisnesLo
 C:\Users\Programmer\source\repos\Social_Network\BuisnesLogic\obj\Debug\BuisnesLogic.dll
 C:\Users\Programmer\source\repos\Social_Network\BuisnesLogic\obj\Debug\BuisnesLogic.pdb
 C:\Users\Programmer\source\repos\Social_Network\BuisnesLogic\bin\Debug\MongoDB.Libmongocrypt.dll
+C:\Users\Programmer\source\repos\Social_Network\BuisnesLogic\bin\Debug\DalNeo4j.dll
+C:\Users\Programmer\source\repos\Social_Network\BuisnesLogic\bin\Debug\DTONeo4j.dll
+C:\Users\Programmer\source\repos\Social_Network\BuisnesLogic\bin\Debug\Neo4jClient.dll
+C:\Users\Programmer\source\repos\Social_Network\BuisnesLogic\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Programmer\source\repos\Social_Network\BuisnesLogic\bin\Debug\DalNeo4j.pdb
+C:\Users\Programmer\source\repos\Social_Network\BuisnesLogic\bin\Debug\DalNeo4j.dll.config
+C:\Users\Programmer\source\repos\Social_Network\BuisnesLogic\bin\Debug\DTONeo4j.pdb
+C:\Users\Programmer\source\repos\Social_Network\BuisnesLogic\bin\Debug\Neo4jClient.pdb
+C:\Users\Programmer\source\repos\Social_Network\BuisnesLogic\bin\Debug\Neo4jClient.xml
+C:\Users\Programmer\source\repos\Social_Network\BuisnesLogic\bin\Debug\Newtonsoft.Json.xml

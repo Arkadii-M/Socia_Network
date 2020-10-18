@@ -1,0 +1,34 @@
+﻿@{
+    Layout = "~/Views/RegisteredUser/Register_Layout.cshtml";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link type="text/css" rel="stylesheet" href="../../Content/Site.css" />
+    <title>Список користувачів</title>
+</head>
+<body>
+    <div>
+        <h3>Список користувачів</h3>
+        <table>
+            <tr>
+                <td><p>Ім'я</p></td>
+                <td><p>Прізвище</p></td>
+                <td><p>Інтереси</p></td>
+                <td></td>
+            </tr>
+            @foreach (var b in ViewBag.Users)
+            {
+                <tr>
+                    <td><p>@b.User_Name</p></td>
+                    <td><p>@b.User_Last_Name</p></td>
+                    <td><p>@string.Join(",",b.Interests)</p></td>
+                    <td><p><a href="/RegisteredUser/UserPage?id=@b.User_Id">Перейти на сторінку</a></p></td>
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>

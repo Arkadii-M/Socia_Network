@@ -1,0 +1,56 @@
+﻿
+@{
+    Layout = "~/Views/Home/Home_Layout.cshtml";
+}
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <link type="text/css" rel="stylesheet" href="../../Content/Site.css" />
+        <title>Реєстрація</title>
+    </head>
+    <body>
+        <div>
+            <h3>Реєстрація</h3>
+            <form method="post" action="">
+                <table>
+                    <tr>
+                        <td><p>Логін: </p></td>
+                        <td><input type="text" name="User_Login" /> </td>
+                    </tr>
+                    <tr>
+                        <td><p>Пароль: </p></td>
+                        <td>
+                            <input type="password" name="User_Password" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p>Ім'я: </p></td>
+                        <td>
+                            <input type="text" name="User_Name" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p>Прізвище: </p></td>
+                        <td>
+                            <input type="text" name="User_Last_Name" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p>Електронна пошта: </p></td>
+                        <td>
+                            <input type="text" name="Email" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p>Інтереси: </p></td>
+                        <td>
+                            <input type="text" name="Interests" />
+                        </td>
+                    </tr>
+                    <tr><td><input type="submit" value="Реєстрація" /> </td><td></td></tr>
+                </table>
+            </form>
+        </div>
+    </body>
+    </html>

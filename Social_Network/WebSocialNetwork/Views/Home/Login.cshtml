@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Вхід";
+    Layout = "~/Views/Home/Home_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link type="text/css" rel="stylesheet" href="../../Content/Site.css" />
+    <title>Вхід</title>
+</head>
+<body>
+    <div>
+        <h3>Введіть логін і пароль</h3>
+        <form method="post" action="">
+            <table>
+                <tr>
+                    <td><p>Логін: </p></td>
+                    <td><input type="text" name="UserName" /> </td>
+                </tr>
+                <tr>
+                    <td><p>Пароль: </p></td>
+                    <td>
+                        <input type="password" name="Password" />
+                    </td>
+                </tr>
+                <tr><td><input type="submit" value="Вхід" /> </td><td></td></tr>
+            </table>
+        </form>
+    </div>
+</body>
+</html>

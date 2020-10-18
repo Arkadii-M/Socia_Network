@@ -1,0 +1,21 @@
+﻿@{
+    Layout = "~/Views/Posts/Posts_Layout.cshtml";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link type="text/css" rel="stylesheet" href="../../Content/Site.css" />
+    <title>Пости</title>
+</head>
+<body>
+    <div>
+        @foreach (var post in ViewBag.Posts)
+        {
+            {Html.RenderPartial("Post", (WebSocialNetwork.Models.PostModel)post);}
+
+        }
+    </div>
+</body>
+</html>

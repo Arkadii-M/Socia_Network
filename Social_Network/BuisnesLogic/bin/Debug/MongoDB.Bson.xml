@@ -12606,6 +12606,21 @@
             </summary>
             <exception cref="T:System.ObjectDisposedException">RawBsonDocument</exception>
         </member>
+        <member name="T:MongoDB.Bson.PreserveAttribute">
+            <summary>
+            Prevents the Xamarin managed linker from stripping the target.
+            </summary>
+        </member>
+        <member name="F:MongoDB.Bson.PreserveAttribute.AllMembers">
+            <summary>
+            When used on a class rather than a property, ensures that all members of this type are preserved.
+            </summary>
+        </member>
+        <member name="F:MongoDB.Bson.PreserveAttribute.Conditional">
+            <summary>
+            Flags the method as a method to preserve during linking if the container class is pulled in.
+            </summary>
+        </member>
         <member name="T:MongoDB.Bson.Serialization.AttributedSerializationProvider">
             <summary>
             Provides serializers based on an attribute.

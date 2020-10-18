@@ -15,20 +15,19 @@ namespace BuisnesLogic.User
     {
         private const string conn = "mongodb://localhost:27017/";
         
-        private DTO.UsersDTO Account;
+        private int user_id;
         private bool Logined;
-        public User()
+        public User(int id)
         {
-            this.Account = null;
+            this.user_id = id;
             Logined = false;
         }
-        public bool LoginAsUser(string login,string pwd)
+        public bool LoginAsUser(string login,string pass)
         {
             DAL.Concrete.UsersDal user = new DAL.Concrete.UsersDal(conn);
             UsersDTO temp;
             try
             {
-
                 temp = user.GetUserByLogin(login);
             }
             catch(Exception exp)
@@ -37,9 +36,9 @@ namespace BuisnesLogic.User
             }
             if(temp.Id != null)
             {
-                if(temp.User_Password == pwd)
+                if (temp.User_Password == pass)
                 {
-                    this.Account = temp;
+                    this.user_id = temp.User_Id;
                     Logined = true;
                     return true;
                 }
@@ -49,7 +48,7 @@ namespace BuisnesLogic.User
         }
         public void Unlogin()
         {
-            this.Account = null;
+            this.user_id = 0;
             this.Logined = false;
         }
         public bool CreateNewUser(string Login, string Pwd, string Name, string L_Name, string _Email, List<string> Interests)
@@ -81,9 +80,10 @@ namespace BuisnesLogic.User
                     return false;
                 }
             }
-            this.Account = dal.CreateUser(new_user);
+            var Account = dal.CreateUser(new_user);
             if (Account.Id != null)
             {
+                this.user_id = Account.User_Id;
                 this.Logined = true;
                 return true;
                 
@@ -96,26 +96,37 @@ namespace BuisnesLogic.User
             DAL.Concrete.UsersDal dal = new DAL.Concrete.UsersDal(conn);
             return dal.GetAllUsers();
         }
+        private UsersDTO GetMe()
+        {
+            DAL.Concrete.UsersDal dal = new DAL.Concrete.UsersDal(conn);
+            return dal.GetUserById(this.user_id);
+        }
+        public int GetMyId()
+        {
+            return this.user_id;
+        }
         public string GetMyName()
         {
-            return this.Account.User_Name;
+            return GetMe().User_Name;
         }
         public string GetMyLastName()
         {
-            return this.Account.User_Last_Name;
+
+            return GetMe().User_Last_Name;
         }
         public string GetMyLogin()
         {
-            return this.Account.User_Login;
+
+            return GetMe().User_Login;
         }
         public string GetMyEmail()
         {
-            return this.Account.Email;
+            return GetMe().Email;
         }
         public List<string> GetMyFriendsList()
         {
             DAL.Concrete.UsersDal dal = new DAL.Concrete.UsersDal(conn);
-            var list = this.Account.Friends_Ids;
+            var list = this.GetMe().Friends_Ids;
             var res = new List<string>();
             foreach(var p in list)
             {
@@ -126,7 +137,7 @@ namespace BuisnesLogic.User
         }
         public List<string> GetMyInterestsList()
         {
-            return this.Account.Interests;
+            return this.GetMe().Interests;
         }
         //Todo: delete account
     }
