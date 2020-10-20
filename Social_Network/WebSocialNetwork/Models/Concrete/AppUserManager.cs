@@ -42,8 +42,9 @@ namespace WebSocialNetwork.Models.Concrete
         {
             BuisnesLogic.Concrete.UserManager manager = new UserManager();
             var path = manager.GetPathBetweenUsers(u1_id, u2_id);
+            var path_len = manager.GetPathLenBetweenUsers(u1_id, u2_id);
             var path_list = _mapper.Map<List<UserModel>>(path);
-            return new UsersPathModel { UserFromId = u1_id, UserToId = u2_id, PathToUser = path_list };
+            return new UsersPathModel { UserFromId = u1_id, UserToId = u2_id, PathToUser = path_list,PathLen = path_len };
         }
 
         public int GetPathLenBetweenUsers(int id_1, int id_2)
@@ -67,6 +68,18 @@ namespace WebSocialNetwork.Models.Concrete
         {
             BuisnesLogic.Concrete.UserManager manager = new UserManager();
             return _mapper.Map<UserModel>(manager.GetUserByLogin(login));
+        }
+
+        public void AddToFriend(int id_from, int id_to)
+        {
+            BuisnesLogic.Concrete.UserManager manager = new UserManager();
+            manager.CreateRelationship(id_from, id_to);
+        }
+
+        public bool CreateUser(RegisterModel u)
+        {
+            BuisnesLogic.Concrete.UserManager manager = new UserManager();
+            return manager.CreateUser(_mapper.Map<UsersDTO>(u));
         }
     }
 }

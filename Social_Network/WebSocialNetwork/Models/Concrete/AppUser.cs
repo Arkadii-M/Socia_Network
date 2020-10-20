@@ -28,7 +28,7 @@ namespace WebSocialNetwork.Models
             }
             return false;
         }
-        public bool Register(UsersDTO user)
+        public bool Register(RegisterModel user)
         {
             var u = this.Get();
             if(u.CreateNewUser(user.User_Login,user.User_Password,user.User_Name,user.User_Last_Name,user.Email,user.Interests))

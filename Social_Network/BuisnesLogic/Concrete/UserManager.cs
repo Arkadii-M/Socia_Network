@@ -69,5 +69,41 @@ namespace BuisnesLogic.Concrete
             DAL.Concrete.UsersDal dal = new DAL.Concrete.UsersDal(this.mongo_connectionString);
             return dal.GetUserByLogin(login);
         }
+
+        public void CreateRelationship(int id_from, int id_to)
+        {
+            DAL.Concrete.UsersDal dal = new DAL.Concrete.UsersDal(this.mongo_connectionString);
+            var u = dal.GetUserById(id_from);
+            if(u.Friends_Ids.Contains(id_to))
+            {
+                return;
+            }
+            else
+            {
+                u.Friends_Ids.Add(id_to);
+                u = dal.UpdateUser(u);
+                DalNeo4j.Concrete.UsersDalNeo4j Neo4jDal = new DalNeo4j.Concrete.UsersDalNeo4j(this.neo4j_connectionString, this.neo4j_login, this.neo4j_pass);
+                Neo4jDal.AddRelationship(id_from, id_to);
+            }
+
+        }
+
+        public bool CreateUser(UsersDTO u)
+        {
+            DAL.Concrete.UsersDal dal = new DAL.Concrete.UsersDal(this.mongo_connectionString);
+            DalNeo4j.Concrete.UsersDalNeo4j Neo4jDal = new DalNeo4j.Concrete.UsersDalNeo4j(this.neo4j_connectionString, this.neo4j_login, this.neo4j_pass);
+            
+            try
+            {
+                dal.CreateUser(u);
+                Neo4jDal.AddUser(new UserLableDTO { User_Id = u.User_Id, User_Name = u.User_Name, User_Last_Name = u.User_Last_Name, User_Login = u.User_Login });
+            }
+            catch(Exception exp)
+            {
+                return false;
+                // add reaction
+            }
+            return true;
+        }
     }
 }

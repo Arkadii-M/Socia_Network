@@ -382,7 +382,9 @@
     <Compile Include="Models\PostModel.cs" />
     <Compile Include="Models\Profiles\MyPageUserProfile.cs" />
     <Compile Include="Models\Profiles\PostProfile.cs" />
+    <Compile Include="Models\Profiles\RegisterProfile.cs" />
     <Compile Include="Models\Profiles\UserProfile.cs" />
+    <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\UsersPathModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -17,12 +17,12 @@ namespace WebSocialNetwork.Models.Profiles
                 .ForMember(dest => dest.User_Id, scr => scr.MapFrom(u => u.User_Id))
                 .ForMember(dest => dest.User_Name, scr => scr.MapFrom(u => u.User_Name))
                 .ForMember(dest => dest.User_Last_Name, scr => scr.MapFrom(u => u.User_Last_Name))
-                .ForMember(dest => dest.Interests, scr => scr.MapFrom(u => u.Interests));
+                .ForMember(dest => dest.Interests, scr => scr.MapFrom(u => u.Interests)).ReverseMap();
             CreateMap<UserLableDTO,UserModel>()
                 .ForMember(dest => dest.User_Id, scr => scr.MapFrom(u => u.User_Id))
                 .ForMember(dest => dest.User_Name, scr => scr.MapFrom(u => u.User_Name))
                 .ForMember(dest => dest.User_Last_Name, scr => scr.MapFrom(u => u.User_Last_Name))
-                .ForMember(dest => dest.Interests, scr => scr.MapFrom(u =>GetUserInterests(u.User_Id)));
+                .ForMember(dest => dest.Interests, scr => scr.MapFrom(u =>GetUserInterests(u.User_Id))).ReverseMap();
 
         }
         public static List<string> GetUserInterests(int id)

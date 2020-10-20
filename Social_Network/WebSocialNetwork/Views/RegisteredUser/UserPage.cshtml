@@ -35,19 +35,31 @@
                         }
                     </td>
                 </tr>
-                <!-- Добавить расстояние -->
-                <!--
                 <tr>
-                    <td><p>Друзі: </p></td>
                     <td>
-                        foreach (var friends in ViewBag.User.Friends_Ids)
+                        @if (ViewBag.Path.PathLen == 2)
                         {
-                            <p>friends , </p>
+                            <p>Ви друзі</p>
+                        }
+                        else if (ViewBag.Path.PathLen == -1 || ViewBag.Path.PathLen == 0)
+                        {
+                            //nothing
+                        }
+                        else
+                        {
+                            <p>Відстань до цього користувача: @(ViewBag.Path.PathLen-1)</p>
+
+                            foreach (var u in ViewBag.Path.PathToUser)
+                            {
+                                <p>@u.User_Name @u.User_Last_Name -> </p>
+                            }
                         }
                     </td>
                 </tr>
-                 -->
-                <tr><td><input type="submit" value="Додати в друзі" /> </td><td></td></tr>
+                @if (ViewBag.Path.PathLen != 2 && ViewBag.Path.UserFromId != ViewBag.Path.UserToId)
+                {
+                    <tr><td><input type="submit" value="Додати в друзі" /> </td><td></td></tr>
+                }
             </table>
             </form>
     </div>

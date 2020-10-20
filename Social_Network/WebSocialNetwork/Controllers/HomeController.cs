@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using Web.Models;
 using WebSocialNetwork.Models;
+using WebSocialNetwork.Models.Concrete;
+using WebSocialNetwork.Models.Interfaces;
 
 namespace WebSocialNetwork.Controllers
 {
@@ -41,13 +43,14 @@ namespace WebSocialNetwork.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Register(UsersDTO u)
+        public ActionResult Register(RegisterModel u)
         {
             AppUser user = new AppUser();
-
-            if (user.Register(u))
+            IAppUserManager manager = new AppUserManager();
+            
+            if (manager.CreateUser(u))
             {
-                TempData["User"] = user.User_Id;
+                TempData["User"] = manager.GetUserByLogin(u.User_Login).User_Id;
                 return RedirectToRoute(new { controller = "RegisteredUser", action = "Index" });
             }
             return new HttpUnauthorizedResult();

@@ -39,6 +39,21 @@ namespace DalNeo4j.Concrete
                     .ExecuteWithoutResults();
             }
         }
+        public void AddRelationship(int u1_id, int u2_id)
+        {
+            using (var client = new GraphClient(new Uri(connectionString), login, pass))
+            {
+                client.Connect();
+                client.Cypher
+                    .Match("(user1:User),(user2:User)")
+                    .Where("user1.User_Id = {p_id1}")
+                    .AndWhere("user2.User_Id = {p_id2}")
+                    .WithParam("p_id1", u1_id)
+                    .WithParam("p_id2", u2_id)
+                    .Create("(user1)-[:Friends]->(user2)")
+                    .ExecuteWithoutResults();
+            }
+        }
 
         public void AddUser(UserLableDTO u)
         {
@@ -69,6 +84,21 @@ namespace DalNeo4j.Concrete
                     .Delete("r")
                     .ExecuteWithoutResults();
 
+            }
+        }
+        public void DeleteRelationship(int u1_id, int u2_id)
+        {
+            using (var client = new GraphClient(new Uri(connectionString), login, pass))
+            {
+                client.Connect();
+                client.Cypher
+                    .Match("(user1:User)-[r:Friends]-(user2:User)")
+                    .Where("user1.User_Id = {p_id1}")
+                    .AndWhere("user2.User_Id = {p_id2}")
+                    .WithParam("p_id1", u1_id)
+                    .WithParam("p_id2", u2_id)
+                    .Delete("r")
+                    .ExecuteWithoutResults();
             }
         }
 
@@ -160,6 +190,7 @@ namespace DalNeo4j.Concrete
         {
             using (var client = new GraphClient(new Uri(connectionString), login, pass))
             {
+                if(id1 == id2) { return new List<UserLableDTO>(); ; }
                 client.Connect();
                 var res = client.Cypher
                     .Match("(u1:User{User_Id: {p_id1} }),(u2:User{User_Id: {p_id2} })," +

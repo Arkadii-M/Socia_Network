@@ -15,6 +15,8 @@ namespace BuisnesLogic.Interfaces
         List<UsersDTO> GetAllUsers();
         UsersDTO GetUserById(int id);
         UsersDTO GetUserByLogin(string login);
+        bool CreateUser(UsersDTO u);
+        void CreateRelationship(int id_from,int id_to);
 
     }
 }

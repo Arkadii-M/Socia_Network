@@ -11,6 +11,6 @@ namespace WebSocialNetwork.Models
         public int UserFromId { get; set; }
         public int UserToId { get; set; }
         public List<UserModel> PathToUser { get; set; }
-        public int PathLen { get { return this.PathToUser.Count; } }
+        public int PathLen { get; set; }
     }
 }

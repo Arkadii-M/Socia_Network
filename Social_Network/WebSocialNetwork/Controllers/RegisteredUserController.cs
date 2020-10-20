@@ -52,8 +52,10 @@ namespace Web.Controllers
         public ActionResult UserPage(int id)
         {
             IAppUserManager manager = new AppUserManager();
-            var user = manager.GetUserById(id);
-            ViewBag.User = user;
+            var userinfo = manager.GetUserById(id);
+            var path = manager.GetPathBetweenUsers(user.User_Id,id);
+            ViewBag.Path = path;
+            ViewBag.User = userinfo;
             TempData["User_Id"] = id;
             return View();
         }
@@ -61,6 +63,7 @@ namespace Web.Controllers
         public ActionResult UserPage()
         {
             int id = (int)TempData["User_Id"];
+
             user.Get().AddToFriend(id);
             return Redirect("~/RegisteredUser/Users");
         }
