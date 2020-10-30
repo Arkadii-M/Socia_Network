@@ -373,8 +373,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Concrete\AppAuthManager.cs" />
+    <Compile Include="Models\Concrete\AppPostsManager.cs" />
     <Compile Include="Models\Concrete\AppUser.cs" />
     <Compile Include="Models\Concrete\AppUserManager.cs" />
+    <Compile Include="Models\Interfaces\IAppAuthManager.cs" />
+    <Compile Include="Models\Interfaces\IAppPostsManager.cs" />
     <Compile Include="Models\Interfaces\IAppUserManager.cs" />
     <Compile Include="Models\Interfaces\IUser.cs" />
     <Compile Include="Models\LoginModel.cs" />

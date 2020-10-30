@@ -7,6 +7,8 @@ using System.Web.Mvc;
 using WebSocialNetwork.Models;
 using AutoMapper;
 using WebSocialNetwork.Models.Profiles;
+using WebSocialNetwork.Models.Interfaces;
+using WebSocialNetwork.Models.Concrete;
 
 namespace Web.Controllers
 {
@@ -31,54 +33,33 @@ namespace Web.Controllers
         [HttpPost]
         public ActionResult Posts(FormCollection form)
         {
+            IAppPostsManager manager = new AppPostsManager();
+
             var post_id = Convert.ToInt32(form.GetValues("Post_Id")[0]);
             var action = form.GetKey(1);
 
             if (action == "LikeButton")
             {
-                user.Get().LikePost(post_id);
+                manager.LikePost(post_id, user.User_Id);
             }
             else if (action == "DislikeButton")
             {
-                user.Get().DislikePost(post_id);
+               manager.DislikePost(post_id, user.User_Id);
             }
             else if (action == "CommentButton")
             {
                 TempData["post_id"] = post_id;
                 return Redirect("~/Posts/AddComment");
             }
-            //Change this!
-
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new PostProfile());
-            });
-
-            IMapper mapper = mappingConfig.CreateMapper();
-            var all_posts = new List<PostModel>();
-            foreach (var p in user.Get().GetAllPosts())
-            {
-                all_posts.Add(mapper.Map<PostModel>(p));
-            }
-            ViewBag.Posts = all_posts;
+            ViewBag.Posts = manager.GetAllPosts();
             return View();
         }
         
         [HttpGet]
         public ActionResult Posts()
         {
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new PostProfile());
-            });
-
-            IMapper mapper = mappingConfig.CreateMapper();
-            var all_posts = new List<PostModel>();
-            foreach(var p in user.Get().GetAllPosts())
-            {
-                all_posts.Add(mapper.Map<PostModel>(p));
-            }
-            ViewBag.Posts = all_posts;
+            IAppPostsManager manager = new AppPostsManager();
+            ViewBag.Posts = manager.GetAllPosts();
 
             return View();
         }
@@ -92,7 +73,8 @@ namespace Web.Controllers
         [HttpPost]
         public ActionResult AddComment(string comment)
         {
-            user.Get().AddComment((int)TempData["post_id"], comment);
+            IAppPostsManager manager = new AppPostsManager();
+            manager.AddCommentToPost((int)TempData["post_id"], user.User_Id, comment);
             return Redirect("~/Posts/Posts");
         }
 
@@ -104,9 +86,10 @@ namespace Web.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult AddPost(PostsDTO post)
+        public ActionResult AddPost(PostModel post)
         {
-            user.Get().Create_Post(post.Title, post.Body, string.Join(",",post.Tags));
+            IAppPostsManager manager = new AppPostsManager();
+            manager.CreatePost(user.User_Id, post);
             return Redirect("~/Posts/Posts");
         }
 

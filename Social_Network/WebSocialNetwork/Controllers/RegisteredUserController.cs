@@ -62,9 +62,12 @@ namespace Web.Controllers
         [HttpPost]
         public ActionResult UserPage()
         {
+            IAppUserManager manager = new AppUserManager();
+            
             int id = (int)TempData["User_Id"];
 
-            user.Get().AddToFriend(id);
+            manager.AddToFriend(user.User_Id, id);
+
             return Redirect("~/RegisteredUser/Users");
         }
 

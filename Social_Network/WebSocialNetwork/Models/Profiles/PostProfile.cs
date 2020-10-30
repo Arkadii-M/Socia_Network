@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using WebSocialNetwork.Models.Concrete;
+using WebSocialNetwork.Models.Interfaces;
 
 namespace WebSocialNetwork.Models.Profiles
 {
@@ -28,9 +30,11 @@ namespace WebSocialNetwork.Models.Profiles
 
         public static string GetUserFullName(int id)
         {
-            AppUser u = new AppUser(id);
-            var name = u.Get().GetMyName();
-            var last_name = u.Get().GetMyLastName();
+            IAppUserManager manager = new AppUserManager();
+            var user = manager.GetUserById(id);
+
+            var name = user.User_Name;
+            var last_name = user.User_Last_Name;
             return (name+" "+last_name);
         }
     }

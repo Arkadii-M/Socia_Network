@@ -29,10 +29,12 @@ namespace WebSocialNetwork.Controllers
         [HttpPost]
         public ActionResult Login(LoginModel l)
         {
-            AppUser user = new AppUser();
-            if (user.Login(l.UserName,l.Password))
+            IAppAuthManager auth = new AppAuthManager();
+            IAppUserManager manager = new AppUserManager();
+
+            if (auth.Login(l))
             {
-                TempData["User"] = user.User_Id;
+                TempData["User"] = manager.GetUserByLogin(l.UserName).User_Id;
                 return RedirectToRoute(new { controller = "RegisteredUser", action = "Index" });
             }
             return new HttpUnauthorizedResult();
@@ -45,6 +47,7 @@ namespace WebSocialNetwork.Controllers
         [HttpPost]
         public ActionResult Register(RegisterModel u)
         {
+
             AppUser user = new AppUser();
             IAppUserManager manager = new AppUserManager();
             

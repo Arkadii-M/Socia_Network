@@ -44,7 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Concrete\AuthManager.cs" />
+    <Compile Include="Concrete\PostManager.cs" />
     <Compile Include="Concrete\UserManager.cs" />
+    <Compile Include="Interfaces\IAuthManager.cs" />
+    <Compile Include="Interfaces\IPostManager.cs" />
     <Compile Include="Interfaces\IUserManager.cs" />
     <Compile Include="User\UserAccountActions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

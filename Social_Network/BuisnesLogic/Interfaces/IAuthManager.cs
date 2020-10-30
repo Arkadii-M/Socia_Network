@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebSocialNetwork.Models
+namespace BuisnesLogic.Interfaces
 {
-    public interface IUser
+    public interface IAuthManager
     {
-        int User_Id { get; set; }
+        bool Login(string UName,string UPass);
     }
 }
