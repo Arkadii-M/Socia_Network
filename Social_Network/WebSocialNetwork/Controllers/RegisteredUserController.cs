@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using DTO;
 using System.ComponentModel;
-using BuisnesLogic.User;
 using WebSocialNetwork.Models;
 using BuisnesLogic.Interfaces;
 using BuisnesLogic.Concrete;
@@ -18,8 +17,10 @@ namespace Web.Controllers
     {
         // GET: RegisteredUser
         private static IUser user;
-        public RegisteredUserController()
+        private readonly IAppUserManager _userManager;
+        public RegisteredUserController(IAppUserManager userManager)
         {
+            this._userManager = userManager;
         }
         public ActionResult Index()
         {
@@ -37,23 +38,20 @@ namespace Web.Controllers
         }
         public ActionResult MyPage()
         {
-            IAppUserManager manager = new AppUserManager();
-            ViewBag.User = manager.GetMyUserById(user.User_Id);
+            ViewBag.User = _userManager.GetMyUserById(user.User_Id);
             return View();
         }
         public ActionResult Users()
         {
-            IAppUserManager manager = new AppUserManager(); 
-            var all_users = manager.GetAllUsers();
+            var all_users = _userManager.GetAllUsers();
             ViewBag.Users = all_users;
             return View();
         }
         [HttpGet]
         public ActionResult UserPage(int id)
         {
-            IAppUserManager manager = new AppUserManager();
-            var userinfo = manager.GetUserById(id);
-            var path = manager.GetPathBetweenUsers(user.User_Id,id);
+            var userinfo = _userManager.GetUserById(id);
+            var path = _userManager.GetPathBetweenUsers(user.User_Id,id);
             ViewBag.Path = path;
             ViewBag.User = userinfo;
             TempData["User_Id"] = id;
@@ -61,12 +59,10 @@ namespace Web.Controllers
         }
         [HttpPost]
         public ActionResult UserPage()
-        {
-            IAppUserManager manager = new AppUserManager();
-            
+        {   
             int id = (int)TempData["User_Id"];
 
-            manager.AddToFriend(user.User_Id, id);
+            _userManager.AddToFriend(user.User_Id, id);
 
             return Redirect("~/RegisteredUser/Users");
         }

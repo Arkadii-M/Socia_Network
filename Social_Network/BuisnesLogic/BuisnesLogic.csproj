@@ -50,9 +50,7 @@
     <Compile Include="Interfaces\IAuthManager.cs" />
     <Compile Include="Interfaces\IPostManager.cs" />
     <Compile Include="Interfaces\IUserManager.cs" />
-    <Compile Include="User\UserAccountActions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="User\UserSocialActions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DalNeo4j\DalNeo4j.csproj">

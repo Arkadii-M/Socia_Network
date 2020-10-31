@@ -13,8 +13,12 @@ namespace WebSocialNetwork.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController()
+        private readonly IAppAuthManager _authManager;
+        private readonly IAppUserManager _userManager;
+        public HomeController(IAppAuthManager authManager, IAppUserManager userManager)
         {
+            this._authManager = authManager;
+            this._userManager = userManager;
         }
         public ActionResult Index()
         {
@@ -29,12 +33,9 @@ namespace WebSocialNetwork.Controllers
         [HttpPost]
         public ActionResult Login(LoginModel l)
         {
-            IAppAuthManager auth = new AppAuthManager();
-            IAppUserManager manager = new AppUserManager();
-
-            if (auth.Login(l))
+            if (_authManager.Login(l))
             {
-                TempData["User"] = manager.GetUserByLogin(l.UserName).User_Id;
+                TempData["User"] = _userManager.GetUserByLogin(l.UserName).User_Id;
                 return RedirectToRoute(new { controller = "RegisteredUser", action = "Index" });
             }
             return new HttpUnauthorizedResult();
@@ -46,14 +47,10 @@ namespace WebSocialNetwork.Controllers
         }
         [HttpPost]
         public ActionResult Register(RegisterModel u)
-        {
-
-            AppUser user = new AppUser();
-            IAppUserManager manager = new AppUserManager();
-            
-            if (manager.CreateUser(u))
+        {         
+            if (_userManager.CreateUser(u))
             {
-                TempData["User"] = manager.GetUserByLogin(u.User_Login).User_Id;
+                TempData["User"] = _userManager.GetUserByLogin(u.User_Login).User_Id;
                 return RedirectToRoute(new { controller = "RegisteredUser", action = "Index" });
             }
             return new HttpUnauthorizedResult();

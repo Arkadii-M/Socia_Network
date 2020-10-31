@@ -17,10 +17,12 @@ namespace WebSocialNetwork.Models.Concrete
         {
             this._authManager = authManager;
         }
+        /*
         public AppAuthManager()
         {
             this._authManager = new AuthManager();
         }
+        */
 
         public bool Login(LoginModel l)
         {

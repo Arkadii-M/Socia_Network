@@ -265,3 +265,11 @@ C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\DalNeo4j.pd
 C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\DalNeo4j.dll.config
 C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\Neo4jClient.pdb
 C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\Neo4jClient.xml
+C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\Unity.Abstractions.dll
+C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\Unity.Container.dll
+C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\Unity.Mvc.dll
+C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\WebActivatorEx.dll
+C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\Unity.Abstractions.pdb
+C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\Unity.Container.pdb
+C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\Unity.Mvc.pdb
+C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\Unity.Mvc.xml

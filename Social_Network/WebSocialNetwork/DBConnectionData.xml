@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DBConnectionData>
+	<MongoDB>
+		<add key ="MongoConnectionString" value ="mongodb://localhost:27017/"></add>
+	</MongoDB>
+	<Neo4j>
+		<add key ="Neo4jConnectionString" value ="http://localhost:7474/db/data/"></add>
+		<add key ="Neo4jLogin" value ="neo4j"></add>
+		<add key ="Neo4jPassword" value ="1234567890"></add>
+	</Neo4j>
+</DBConnectionData>

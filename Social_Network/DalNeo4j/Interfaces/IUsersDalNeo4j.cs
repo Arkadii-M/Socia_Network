@@ -14,6 +14,7 @@ namespace DalNeo4j.Interfaces
         UserLableDTO GetUser(int id); 
         void DeleteRelationship(UserLableDTO u1, UserLableDTO u2);
         void AddRelationship(UserLableDTO u1, UserLableDTO u2);
+        void AddRelationship(int u1_id, int u2_id);
         bool HasRelationship(UserLableDTO u1, UserLableDTO u2);
         int MinPathBetween(UserLableDTO u1, UserLableDTO u2);
         int MinPathBetween(int id1, int id2);

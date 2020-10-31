@@ -13,20 +13,10 @@ namespace BuisnesLogic.Concrete
 {
     public class PostManager: IPostManager
     {
-        private readonly string mongo_connectionString = "mongodb://localhost:27017/";
         private readonly IPostsDal _postDal;
-        public PostManager()
-        {
-            this._postDal = new PostsDal(this.mongo_connectionString);
-        }
         public PostManager(IPostsDal userDal)
         {
             this._postDal = userDal;
-        }
-        public PostManager(string mongo_conn)
-        {
-            this.mongo_connectionString = mongo_conn;
-            this._postDal =new  PostsDal(this.mongo_connectionString);
         }
 
         public void AddCommentToPost(int PostId, int Author_Id, string Comment_Text)

@@ -16,22 +16,27 @@ namespace WebSocialNetwork.Models.Concrete
     {
         private readonly IMapper _mapper;
         private readonly IPostManager _postManager;
+        private readonly IUserManager _userManager;
+        /*
         public AppPostsManager()
         {
             this._mapper = ConfigureMapper();
             this._postManager = new PostManager();
         }
-        public AppPostsManager(IPostManager postManager)
+        */
+        public AppPostsManager(IPostManager postManager, IUserManager userManager)
         {
-            this._mapper = ConfigureMapper();
+            this._userManager = userManager;
             this._postManager = postManager;
+            this._mapper = ConfigureMapper();
+            
         }
 
         private IMapper ConfigureMapper()
         {
             var conf = new MapperConfiguration(mc =>
             {
-                mc.AddProfile(new PostProfile());
+                mc.AddProfile(new PostProfile(_userManager));
             });
             return conf.CreateMapper();
 

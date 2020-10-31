@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using BuisnesLogic.Interfaces;
 using DTO;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 using WebSocialNetwork.Models.Concrete;
@@ -11,9 +13,10 @@ namespace WebSocialNetwork.Models.Profiles
 {
     public class PostProfile: Profile
     {
-        public PostProfile()
+        private readonly IUserManager _userManager;
+        public PostProfile(IUserManager userManager)
         {
-            
+            this._userManager = userManager;
             CreateMap<PostsDTO, PostModel>()
                 .ForMember(dest => dest.Post_Id, scr => scr.MapFrom(m => m.Post_Id))
                 .ForMember(dest => dest.Title, scr => scr.MapFrom(m => m.Title))
@@ -28,10 +31,9 @@ namespace WebSocialNetwork.Models.Profiles
 
         }
 
-        public static string GetUserFullName(int id)
+        public string GetUserFullName(int id)
         {
-            IAppUserManager manager = new AppUserManager();
-            var user = manager.GetUserById(id);
+            var user = _userManager.GetUserById(id);
 
             var name = user.User_Name;
             var last_name = user.User_Last_Name;

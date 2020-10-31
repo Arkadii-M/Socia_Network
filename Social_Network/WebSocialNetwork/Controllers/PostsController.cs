@@ -15,7 +15,12 @@ namespace Web.Controllers
     public class PostsController : Controller
     {
         private static IUser user;
+        private readonly IAppPostsManager _postManager;
         // GET: Posts
+        public PostsController(IAppPostsManager postManager)
+        {
+            this._postManager = postManager;
+        }
 
         public ActionResult Index()
         {
@@ -33,33 +38,30 @@ namespace Web.Controllers
         [HttpPost]
         public ActionResult Posts(FormCollection form)
         {
-            IAppPostsManager manager = new AppPostsManager();
-
             var post_id = Convert.ToInt32(form.GetValues("Post_Id")[0]);
             var action = form.GetKey(1);
 
             if (action == "LikeButton")
             {
-                manager.LikePost(post_id, user.User_Id);
+                _postManager.LikePost(post_id, user.User_Id);
             }
             else if (action == "DislikeButton")
             {
-               manager.DislikePost(post_id, user.User_Id);
+                _postManager.DislikePost(post_id, user.User_Id);
             }
             else if (action == "CommentButton")
             {
                 TempData["post_id"] = post_id;
                 return Redirect("~/Posts/AddComment");
             }
-            ViewBag.Posts = manager.GetAllPosts();
+            ViewBag.Posts = _postManager.GetAllPosts();
             return View();
         }
         
         [HttpGet]
         public ActionResult Posts()
         {
-            IAppPostsManager manager = new AppPostsManager();
-            ViewBag.Posts = manager.GetAllPosts();
+            ViewBag.Posts = _postManager.GetAllPosts();
 
             return View();
         }
@@ -73,8 +75,7 @@ namespace Web.Controllers
         [HttpPost]
         public ActionResult AddComment(string comment)
         {
-            IAppPostsManager manager = new AppPostsManager();
-            manager.AddCommentToPost((int)TempData["post_id"], user.User_Id, comment);
+            _postManager.AddCommentToPost((int)TempData["post_id"], user.User_Id, comment);
             return Redirect("~/Posts/Posts");
         }
 
@@ -88,8 +89,7 @@ namespace Web.Controllers
         [HttpPost]
         public ActionResult AddPost(PostModel post)
         {
-            IAppPostsManager manager = new AppPostsManager();
-            manager.CreatePost(user.User_Id, post);
+            _postManager.CreatePost(user.User_Id, post);
             return Redirect("~/Posts/Posts");
         }
 
