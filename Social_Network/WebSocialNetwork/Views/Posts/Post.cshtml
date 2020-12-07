@@ -5,7 +5,6 @@
             <h1>@Model.Title</h1>
             <div class="post-meta">
                 <span class="author">@Model.Author_FullName</span> <br />
-                <span class="category">@string.Join(",", Model.Tags)</span><br />
             </div>
         </div><br />
         <div class="post-content">
@@ -31,11 +30,11 @@
         @foreach (var comm in Model.Comments)
         {
             <div class="comment-meta">
-                <span class="author">@comm.Author_Id</span>
+                <span class="author">@comm.User_Id</span>
             </div>
             <div class="comment">
                 <p>
-                    @comm.Comment_Text
+                    @comm.Body
                 </p>
             </div>
 

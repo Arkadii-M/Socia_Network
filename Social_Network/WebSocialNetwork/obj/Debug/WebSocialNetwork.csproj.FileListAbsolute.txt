@@ -273,3 +273,13 @@ C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\Unity.Abstr
 C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\Unity.Container.pdb
 C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\Unity.Mvc.pdb
 C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\Unity.Mvc.xml
+C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\DalCassandra.dll
+C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\DTOCassandra.dll
+C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\Cassandra.dll
+C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\System.Threading.Tasks.Dataflow.dll
+C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\K4os.Compression.LZ4.dll
+C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\DalCassandra.pdb
+C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\DTOCassandra.pdb
+C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\Cassandra.xml
+C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\System.Threading.Tasks.Dataflow.xml
+C:\Users\Programmer\source\repos\Social_Network\WebSocialNetwork\bin\K4os.Compression.LZ4.xml

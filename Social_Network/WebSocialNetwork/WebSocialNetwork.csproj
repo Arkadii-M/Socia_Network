@@ -387,6 +387,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\Concrete\AppAuthManager.cs" />
     <Compile Include="Models\Concrete\AppPostsManager.cs" />
     <Compile Include="Models\Concrete\AppUser.cs" />
@@ -479,6 +480,10 @@
       <Project>{87b9d62e-030b-47cd-a109-df5f5306b889}</Project>
       <Name>BuisnesLogic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DalCassandra\DalCassandra.csproj">
+      <Project>{b25375a8-bd15-429d-9036-f57725708ba2}</Project>
+      <Name>DalCassandra</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DalNeo4j\DalNeo4j.csproj">
       <Project>{d784e258-6399-4cf0-a0e2-5652d043962c}</Project>
       <Name>DalNeo4j</Name>
@@ -486,6 +491,10 @@
     <ProjectReference Include="..\DAL\DAL.csproj">
       <Project>{CBF934AA-EF0C-41D6-8A2A-6FFA2AEF6F47}</Project>
       <Name>DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DTOCassandra\DTOCassandra.csproj">
+      <Project>{181d7471-8ff9-4668-879d-91c7e501a0b8}</Project>
+      <Name>DTOCassandra</Name>
     </ProjectReference>
     <ProjectReference Include="..\DTONeo4j\DTONeo4j.csproj">
       <Project>{36398cd6-e2d1-4a9a-9d75-315672f790f0}</Project>

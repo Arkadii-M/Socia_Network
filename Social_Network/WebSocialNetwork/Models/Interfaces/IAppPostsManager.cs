@@ -9,9 +9,10 @@ namespace WebSocialNetwork.Models.Interfaces
     public interface IAppPostsManager
     {
         List<PostModel> GetAllPosts();
-        void LikePost(int PostId,int UserId);
-        void DislikePost(int PostId, int UserId);
-        void AddCommentToPost(int PostId,int UserId, string CommentText);
-        void CreatePost(int UserId,PostModel post);
+        List<PostModel> GetUserStream(long id);
+        void LikePost(Guid PostId, int UserId);
+        void DislikePost(Guid PostId, int UserId);
+        void AddCommentToPost(Guid PostId, int UserId, string CommentText);
+        void CreatePost(int UserId, PostModel post);
     }
 }

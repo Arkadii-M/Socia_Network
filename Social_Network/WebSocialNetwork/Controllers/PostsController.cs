@@ -38,7 +38,7 @@ namespace Web.Controllers
         [HttpPost]
         public ActionResult Posts(FormCollection form)
         {
-            var post_id = Convert.ToInt32(form.GetValues("Post_Id")[0]);
+            var post_id = Guid.Parse(form.GetValues("Post_Id")[0]); //?
             var action = form.GetKey(1);
 
             if (action == "LikeButton")
@@ -54,36 +54,35 @@ namespace Web.Controllers
                 TempData["post_id"] = post_id;
                 return Redirect("~/Posts/AddComment");
             }
-            ViewBag.Posts = _postManager.GetAllPosts();
+            ViewBag.Posts = _postManager.GetUserStream(user.User_Id);
             return View();
         }
         
         [HttpGet]
         public ActionResult Posts()
         {
-            ViewBag.Posts = _postManager.GetAllPosts();
+
+            ViewBag.Posts = _postManager.GetUserStream(user.User_Id);
 
             return View();
         }
         [HttpGet]
         public ActionResult AddComment()
         {
-            int id = (int)TempData["post_id"];
+            Guid id = (Guid)TempData["post_id"];
             TempData["post_id"] = id;
             return View();
         }
         [HttpPost]
         public ActionResult AddComment(string comment)
         {
-            _postManager.AddCommentToPost((int)TempData["post_id"], user.User_Id, comment);
+            _postManager.AddCommentToPost((Guid)TempData["post_id"], user.User_Id, comment);
             return Redirect("~/Posts/Posts");
         }
 
         [HttpGet]
         public ActionResult AddPost()
         {
-             //int id = (int)TempData["post_id"];
-            //TempData["post_id"] = id;
             return View();
         }
         [HttpPost]

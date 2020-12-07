@@ -2,6 +2,8 @@ using BuisnesLogic.Concrete;
 using BuisnesLogic.Interfaces;
 using DAL.Concrete;
 using DAL.Interfaces;
+using DalCassandra.Concrete;
+using DalCassandra.Interface;
 using DalNeo4j.Concrete;
 using DalNeo4j.Interfaces;
 using System;
@@ -19,6 +21,7 @@ namespace WebSocialNetwork
     /// </summary>
     public static class UnityConfig
     {
+        public static IUser user = new AppUser();
         #region Unity Container
         private static Lazy<IUnityContainer> container =
           new Lazy<IUnityContainer>(() =>
@@ -52,10 +55,12 @@ namespace WebSocialNetwork
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
+            container.RegisterInstance<IUser>(user);
 
             container.RegisterType<IAuthManager, AuthManager>()
                 .RegisterType<IPostManager, PostManager>()
-                .RegisterType<IUserManager, UserManager>(); // BusinessLogic Managers
+                .RegisterType<IUserManager, UserManager>()
+                .RegisterType<IStreamManager,StreamManager>(); // BusinessLogic Managers
 
             container.RegisterType<IUser, AppUser>()
                 .RegisterType<IAppUserManager, AppUserManager>()
@@ -67,6 +72,10 @@ namespace WebSocialNetwork
             
 
             container.RegisterType<IUsersDalNeo4j, UsersDalNeo4j>(new InjectionConstructor("http://localhost:7474/db/data/", "neo4j", "1234567890")); //Neo4j Dal
+
+            container.RegisterType<IPostDalCassandra, PostDalCassandra>()
+                .RegisterType<IUserDalCassandra, UserDalCassandra>()
+                .RegisterType<IUserStreamDalCassandra, UserStreamDalCassandra>();
 
         }
     }

@@ -9,5 +9,7 @@ namespace WebSocialNetwork.Models
     public interface IUser
     {
         int User_Id { get; set; }
+        string User_Login { get; set; }
+        bool IsLogined { get; set; }
     }
 }

@@ -26,14 +26,24 @@ namespace WebSocialNetwork.Models.Profiles
                 .ForMember(dest => dest.Dislikes, scr => scr.MapFrom(m => m.Dislikes))
                 .ForMember(dest => dest.Comments, scr => scr.MapFrom(m => m.Comments))
                 .ForMember(dest => dest.Author_FullName, scr => scr.MapFrom(name => GetUserFullName(name.Author_Id)));
-                
+
+
+            CreateMap<DTOCassandra.PostDTO, PostModel>()
+               .ForMember(dest => dest.Post_Id, scr => scr.MapFrom(m => m.Post_Id))
+               .ForMember(dest => dest.Title, scr => scr.MapFrom(m => m.Title))
+               .ForMember(dest => dest.Body, scr => scr.MapFrom(m => m.Body))
+               .ForMember(dest => dest.Likes, scr => scr.MapFrom(m => m.Likes))
+               .ForMember(dest => dest.Dislikes, scr => scr.MapFrom(m => m.Dislikes))
+               .ForMember(dest => dest.Comments, scr => scr.MapFrom(m => m.Comments))
+               .ForMember(dest => dest.Author_FullName, scr => scr.MapFrom(name => GetUserFullName(name.Author_Id)));
+
             //CreateMap<PostModel, PostsDTO>().ReverseMap();
 
         }
 
-        public string GetUserFullName(int id)
+        public string GetUserFullName(long id)
         {
-            var user = _userManager.GetUserById(id);
+            var user = _userManager.GetUserById((int)id);
 
             var name = user.User_Name;
             var last_name = user.User_Last_Name;

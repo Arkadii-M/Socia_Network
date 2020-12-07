@@ -117,6 +117,34 @@ namespace DalNeo4j.Concrete
             }
         }
 
+        public List<UserLableDTO> GetAllFriendsForUser(int id)
+        {
+            using (var client = new GraphClient(new Uri(connectionString), login, pass))
+            {
+                client.Connect();
+                var friends_list = client.Cypher
+                    .Match("(u :User) ")
+                   .Match("(u)-[:Friends*1]-(fr)")
+                   .Where((UserLableDTO u) => u.User_Id == id)
+                   .Return(fr => fr.As<UserLableDTO>())
+                   .Results;
+
+                return friends_list.ToList();
+
+            }
+        }
+
+        public List<int> GetAllFriendsIdForUser(int id)
+        {
+            var list = this.GetAllFriendsForUser(id);
+            var to_ret = new List<int>();
+            foreach(var u in list)
+            {
+                to_ret.Add(u.User_Id);
+            }
+            return to_ret;
+        }
+
         public UserLableDTO GetUser(int id)
         {
             using (var client = new GraphClient(new Uri(connectionString), login, pass))

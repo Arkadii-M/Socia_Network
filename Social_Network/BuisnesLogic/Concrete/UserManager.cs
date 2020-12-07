@@ -11,6 +11,8 @@ using DAL.Concrete;
 using DAL.Interfaces;
 using DalNeo4j.Interfaces;
 using DalNeo4j.Concrete;
+using DalCassandra.Interface;
+using DTOCassandra;
 
 namespace BuisnesLogic.Concrete
 {
@@ -19,11 +21,13 @@ namespace BuisnesLogic.Concrete
 
         private readonly IUsersDal _mongoUserDal;
         private readonly IUsersDalNeo4j _neo4jUserDal;
+        private readonly IUserDalCassandra _cassandraUserDal;
 
-        public UserManager(IUsersDal mongoUserDal, IUsersDalNeo4j neo4jUserDal)
+        public UserManager(IUsersDal mongoUserDal, IUsersDalNeo4j neo4jUserDal, IUserDalCassandra cassandraUserDal)
         {
             this._mongoUserDal = mongoUserDal;
             this._neo4jUserDal = neo4jUserDal;
+            this._cassandraUserDal = cassandraUserDal;
         }
 
 
@@ -78,6 +82,7 @@ namespace BuisnesLogic.Concrete
             {
                 this._mongoUserDal.CreateUser(u);
                 this._neo4jUserDal.AddUser(new UserLableDTO { User_Id = u.User_Id, User_Name = u.User_Name, User_Last_Name = u.User_Last_Name, User_Login = u.User_Login });
+                this._cassandraUserDal.InsertUser(new UserDTO { User_Id = u.User_Id, User_Login = u.User_Login });
             }
             catch(Exception exp)
             {

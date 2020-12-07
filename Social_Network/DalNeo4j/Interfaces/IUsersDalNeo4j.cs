@@ -21,6 +21,9 @@ namespace DalNeo4j.Interfaces
         List<UserLableDTO> MinPathBetweenList(int id1, int id2);
         // get relationship
 
+        List<UserLableDTO> GetAllFriendsForUser(int id);
+        List<int> GetAllFriendsIdForUser(int id);
+
 
     }
 }

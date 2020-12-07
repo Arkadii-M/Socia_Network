@@ -1,143 +1,95 @@
 ﻿using BuisnesLogic.Interfaces;
 using DAL.Concrete;
 using DAL.Interfaces;
+using DalCassandra.Concrete;
+using DalCassandra.Interface;
 using DTO;
+using DTOCassandra;
+using DTOCassandra.UDT;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DalNeo4j;
+using DalNeo4j.Interfaces;
 
 namespace BuisnesLogic.Concrete
 {
     public class PostManager: IPostManager
     {
         private readonly IPostsDal _postDal;
-        public PostManager(IPostsDal userDal)
+        private readonly IPostDalCassandra _postDalCassandra;
+        private readonly IUserStreamDalCassandra _userStreamDalCassandra;
+        private readonly IUsersDalNeo4j _usersDalNeo4J;
+        public PostManager(IPostsDal userDal, IPostDalCassandra postDalCassandra,IUserStreamDalCassandra userStreamDalCassandra,IUsersDalNeo4j usersDalNeo4J)
         {
             this._postDal = userDal;
+            this._postDalCassandra = postDalCassandra;
+            this._userStreamDalCassandra = userStreamDalCassandra;
+            this._usersDalNeo4J = usersDalNeo4J;
         }
 
-        public void AddCommentToPost(int PostId, int Author_Id, string Comment_Text)
-        {
-           this._postDal.AddCommentToPost(PostId,
-               new CommentsDTO {
-               Author_Id=Author_Id,
-               Comment_Text=Comment_Text,
-               Dislikes = new List<DislikeDTO>(),
-               Likes = new List<LikesDTO>(),
-               Create = new BsonTimestamp(DateTime.UtcNow.ToBinary()),
-               Modify = new BsonTimestamp(DateTime.UtcNow.ToBinary()),
-               });
-        }
 
-        public void CreatePost(int Author_Id, string Title, string Body, List<string> Tags)
+        public void AddCommentToPost(Guid Post_Id, long Author_Id, string Body)
         {
-            this._postDal.CreatePost(new PostsDTO
+            var post = this._postDalCassandra.AddCommentToPost(Post_Id, 
+                            new DTOCassandra.UDT.Comment { Body = Body, User_Id = Author_Id, Create_Date = DateTimeOffset.Now, Modify_Date = DateTimeOffset.Now });
+
+            this._userStreamDalCassandra.UpdateStreamPost(post, GetAllFriendsForUser(post.Author_Id));
+        }
+        private List<long> GetAllFriendsForUser(long id)
+        {
+            var users_list = this._usersDalNeo4J.GetAllFriendsIdForUser((int)id);
+            var u_l = new List<long>();
+            foreach (var u in users_list)
             {
-                Author_Id = Author_Id,
-                Title = Title,
-                Body = Body,
-                Tags = Tags,
-                Comments = new List<CommentsDTO>() { },
-                Dislikes = new List<DislikeDTO>(),
-                Likes = new List<LikesDTO>(),
-                Create = new BsonTimestamp(DateTime.UtcNow.ToBinary()),
-                Modify = new BsonTimestamp(DateTime.UtcNow.ToBinary())  });
-        }
-
-        public void DislikePost(int PostId,int UserId)
-        {
-            bool has_like = false;
-            bool has_dislike = false;
-            PostsDTO post;
-            try
-            {
-                post = this._postDal.GetPostById(PostId);
-
+                u_l.Add((int)u);
             }
-            catch (Exception)
-            {
-                return;
-            }
-            foreach (var l in post.Likes)
-            {
-                if (l.User_Id == UserId)
+            u_l.Add(id);
+            return u_l;
+        }
+
+        public void CreatePost(long Author_Id, string Title, string Body)
+        {
+            var post = this._postDalCassandra.AddPost(
+                new PostDTO()
                 {
-                    has_like = true;
-                    break;
-                }
-            }
-            foreach (var l in post.Dislikes)
-            {
-                if (l.User_Id == UserId)
-                {
-                    has_dislike = true;
-                    break;
-                }
-            }
-            if (has_like)
-            {
-                this._postDal.UnLike(PostId, new LikesDTO() { User_Id = UserId });
-            }
-            if (!has_dislike)
-            {
-                DTO.DislikeDTO dislike = new DTO.DislikeDTO() { User_Id = PostId };
-                this._postDal.Dislike(PostId, dislike);
-            }
+                    Author_Id = Author_Id,
+                    Body = Body,
+                    Title = Title,
+                    Comments = new List<Comment>(),
+                    Create_Date = DateTimeOffset.Now,
+                    Modify_Date = DateTimeOffset.Now,
+                    Likes = new List<long>(),
+                    Dislikes = new List<long>()
+                });
+            this._userStreamDalCassandra.AddPostToUsersStreams(post, GetAllFriendsForUser(Author_Id));
         }
 
-        public List<PostsDTO> GetAllPosts()
+       
+        public void DislikePost(Guid PostId, int UserId)
         {
-            return this._postDal.GetAllPosts();
+            this._postDalCassandra.DislikePost(PostId, UserId);
+            this._userStreamDalCassandra.UpdateStreamPost(this._postDalCassandra.GetPostById(PostId), GetAllFriendsForUser(UserId));
         }
 
-        public PostsDTO GetPostById(int post_id)
+
+        public DTOCassandra.PostDTO GetPostById(Guid post_id)
         {
-            return this._postDal.GetPostById(post_id);
+            return this._postDalCassandra.GetPostById(post_id);
         }
 
-        public void LikePost(int PostId, int UserId)
+        public void LikePost(Guid PostId, int UserId)
         {
-            bool has_like = false;
-            bool has_dislike = false;
-            PostsDTO post;
-            try
-            {
-                post = this._postDal.GetPostById(PostId);
+            this._postDalCassandra.LikePost(PostId, UserId);
+            this._userStreamDalCassandra.UpdateStreamPost(this._postDalCassandra.GetPostById(PostId), GetAllFriendsForUser(UserId));
+        }
 
-            }
-            catch (Exception)
-            {
-                return;
-            }
-            foreach (var l in post.Likes)
-            {
-                if (l.User_Id == UserId)
-                {
-                    has_like = true;
-                    break;
-                }
-            }
-            foreach (var l in post.Dislikes)
-            {
-                if (l.User_Id == UserId)
-                {
-                    has_dislike = true;
-                    break;
-                }
-            }
-
-            if (has_dislike)
-            {
-                this._postDal.UnDislike(PostId, new DislikeDTO() { User_Id = UserId });
-            }
-            if (!has_like)
-            {
-                DTO.LikesDTO like = new DTO.LikesDTO() { User_Id = UserId };
-                this._postDal.Like(PostId, like);
-            }
+        List<PostDTO> IPostManager.GetAllPosts()
+        {
+            return this._postDalCassandra.GetAllPosts();
         }
     }
 }
